@@ -37,7 +37,7 @@ class PatientBasicData(BaseModel):
     surename: str
 
 class PatientData(BaseModel):
-    id: int = 0
+    id: int
     patient: PatientBasicData
     
 @app.post("/patient", response_model=PatientData)
