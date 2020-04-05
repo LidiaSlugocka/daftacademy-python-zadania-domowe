@@ -33,9 +33,9 @@ def test_delete_method():
     assert response.json() == {"method": "DELETE"}
 
 # Test zadania 3
-@pytest.mark.parametrize("my_patient", [PatientBasicData(name="Lidia", surname="Slugocka")])
+@pytest.mark.parametrize("my_patient", [{"name": "Lidia", "surename": "Slugocka"}, {"name": "Barack", "surename": "Obama"}])
 def test_new_patient(my_patient):
-    response = client.post("/patient")
+    response = client.post("/patient", json=my_patient)
     assert response.status_code == 200
     client.id += 1
     assert response.json() == {"id": client.id, "patient": my_patient}

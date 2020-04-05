@@ -34,7 +34,7 @@ def delete_method():
 # Zadanie 3
 class PatientBasicData(BaseModel):
     name: str
-    surname: str
+    surename: str
 
 class PatientData(BaseModel):
     id: int = 0
