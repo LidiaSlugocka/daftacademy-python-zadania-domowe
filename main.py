@@ -45,8 +45,8 @@ class PatientData(BaseModel):
     patient: PatientBasicData
     
 @app.post('/patient', response_model=PatientBasicData)
-def new_patient(patient: PatientBasicData):
+def new_patient(patientData: PatientBasicData):
     app.counter += 1
-    return PatientData(id=app.counter, patient=data)
+    return PatientData(id=app.counter, patient=patientData)
 
 # Zadanie 4
