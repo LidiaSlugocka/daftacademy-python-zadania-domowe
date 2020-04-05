@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
 
@@ -43,11 +43,13 @@ class PatientData(BaseModel):
 @app.post("/patient", response_model=PatientData)
 def new_patient(patient_data: PatientBasicData):
     app.counter += 1
-    #app.patients[app.counter] = patient_data
+    app.patients[app.counter] = patient_data
     return PatientData(id=app.counter, patient=patient_data)
 
 # Zadanie 4
-#@app.get("/patient/{newId}", response_model=PatientBasicData)
-#def find_patient(newId: int):
-
-    #204
+@app.get("/patient/{pk}", response_model=PatientBasicData)
+def find_patient(pk: int):
+    if pk in app.patients.keys():
+        return app.patients[pk]
+    else:
+        raise HTTPException(204,"No such patient!")

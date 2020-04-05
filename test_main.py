@@ -4,6 +4,7 @@ import pytest
 
 client = TestClient(app)
 client.id = -1
+client.patients = dict()
 
 # Test zadania 1
 def test_hello_world():
@@ -36,8 +37,15 @@ def test_delete_method():
 @pytest.mark.parametrize("my_patient", [{"name": "Lidia", "surename": "Slugocka"}, {"name": "Barack", "surename": "Obama"}])
 def test_new_patient(my_patient):
     response = client.post("/patient", json=my_patient)
-    assert response.status_code == 200
     client.id += 1
+    client.patients[client.id] = my_patient
+    assert response.status_code == 200
     assert response.json() == {"id": client.id, "patient": my_patient}
 
 # Test zadania 4
+#@pytest.mark.parametrize()
+#def test_find_patient(pk):
+#    response = client.get("/patient/{pk}")
+#    assert response.status_code == 200
+    
+    
