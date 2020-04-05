@@ -1,11 +1,10 @@
-from typing import Dict
-
 from fastapi import FastAPI
 from pydantic import BaseModel
 
 
 app = FastAPI()
 app.counter = -1
+app.patients = dict()
 
 # Zadanie 1
 @app.get("/")
@@ -38,12 +37,17 @@ class PatientBasicData(BaseModel):
     surname: str
 
 class PatientData(BaseModel):
-    id: int
+    id: int = 0
     patient: PatientBasicData
     
 @app.post("/patient", response_model=PatientData)
-def new_patient(patientData: PatientBasicData):
+def new_patient(patient_data: PatientBasicData):
     app.counter += 1
-    return PatientData(id=app.counter, patient=patientData)
+    #app.patients[app.counter] = patient_data
+    return PatientData(id=app.counter, patient=patient_data)
 
 # Zadanie 4
+#@app.get("/patient/{newId}", response_model=PatientBasicData)
+#def find_patient(newId: int):
+
+    #204
