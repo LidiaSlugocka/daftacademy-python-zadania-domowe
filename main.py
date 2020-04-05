@@ -1,10 +1,7 @@
 from typing import Dict
 
 from fastapi import FastAPI
-
 from pydantic import BaseModel
-
-import json
 
 
 app = FastAPI()
@@ -19,20 +16,20 @@ def hello_world():
 class MethodReturn(BaseModel):
     method: str
 
-@app.get("/{method}", response_model=MethodReturn)
-def get_method(method: str):
+@app.get("/method", response_model=MethodReturn)
+def get_method():
     return MethodReturn(method='GET')
 
-@app.post("/{method}", response_model=MethodReturn)
-def post_method(method: str):
+@app.post("/method", response_model=MethodReturn)
+def post_method():
     return MethodReturn(method='POST')
 
-@app.put("/{method}", response_model=MethodReturn)
-def put_method(method: str):
+@app.put("/method", response_model=MethodReturn)
+def put_method():
     return MethodReturn(method='PUT')
 
-@app.delete("/{method}", response_model=MethodReturn)
-def delete_method(method: str):
+@app.delete("/method", response_model=MethodReturn)
+def delete_method():
     return MethodReturn(method='DELETE')
 
 # Zadanie 3
@@ -44,7 +41,7 @@ class PatientData(BaseModel):
     id: int
     patient: PatientBasicData
     
-@app.post('/patient', response_model=PatientBasicData)
+@app.post("/patient", response_model=PatientData)
 def new_patient(patientData: PatientBasicData):
     app.counter += 1
     return PatientData(id=app.counter, patient=patientData)
