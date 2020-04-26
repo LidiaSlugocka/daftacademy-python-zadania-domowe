@@ -61,23 +61,22 @@ def find_patient(pk: int):
 
 ############################################################################ F_jak_ficzur
 # Zadanie 2
-my_user = {"trudnY": "paC13Nt"}
+#my_user = {"trudnY": "paC13Nt"}
 app.secret_key = "it is only my secret key and noone knows it"
 app.tokens = []
 security = HTTPBasic()
 
-def get_current_user(credentials: HTTPBasicCredentials = Depends(security)):
+@app.post("/login")
+def log_into(response: Response, credentials: HTTPBasicCredentials = Depends(security)):
     my_username = secrets.compare_digest(credentials.username, "trudnY")
     my_password = secrets.compare_digest(credentials.password, "paC13Nt")
-    if my_username and my_password:
-        session_token = sha256(bytes(f"{user}{password}{app.secret}", encoding="utf8")).hexdigest()
-        app.tokens += session_token
-    else:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
-    return credentials.username
+    if not (my_username and my_password):
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
+                            detail="Incorrect username or password",
+                            headers={"WWW-Authenticate": "Basic"})
+    session_token = sha256(bytes(f"{credentials.username}{credentials.password}{app.secret_key}", encoding="utf8")).hexdigest()
+    app.tokens += session_token
 
-@app.post("/login")
-def log_into(response: Response, user_credentials = Depends(get_current_user)):
-        response.set_cookie(key="session_token", value=session_token)
-        response = RedirectResponse(url="/welcome")
-        return response
+    response.set_cookie(key="session_token", value=session_token)
+    response = RedirectResponse(url="/welcome")
+    response.status_code = status.HTTP_302_FOUND
