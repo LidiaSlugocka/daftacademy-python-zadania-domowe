@@ -76,7 +76,7 @@ def get_current_user(credentials: HTTPBasicCredentials = Depends(security)):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
     return credentials.username
 
-app.post("/login")
+@app.post("/login")
 def log_into(response: Response, user_credentials = Depends(get_current_user)):
         response.set_cookie(key="session_token", value=session_token)
         response = RedirectResponse(url="/welcome")
