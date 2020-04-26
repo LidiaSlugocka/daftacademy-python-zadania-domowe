@@ -8,7 +8,7 @@ app.patients = dict()
 
 # Zadanie 1
 @app.get("/")
-@app.get("/Welcome")
+@app.get("/welcome")
 def hello_world():
     return {"message": "Hello World during the coronavirus pandemic!"}
 
@@ -54,7 +54,3 @@ def find_patient(pk: int):
         return app.patients[pk]
     else:
         raise HTTPException(204,"No such patient!")
-
-################################################################################ F jak ficzur
-# Zadanie 1
-
